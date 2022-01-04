@@ -18,27 +18,33 @@ def loaderandgrabber():
     url = "https://prnt.sc/" + result_str
     driver.get(url)
     os.system('cls')
-    ss = driver.find_element(By.XPATH, '/html/body/div[3]/div/div/img')
-    img_url = ss.get_attribute('src')
-    base64Img = img_url.replace("data:image/png;base64,", "")
-    spliturl = url.rsplit('/', 1)[-1]
+    try:
+        ss = driver.find_element(By.XPATH, '/html/body/div[3]/div/div/img')
+        img_url = ss.get_attribute('src')
+        base64Img = img_url.replace("data:image/png;base64,", "")
+        spliturl = url.rsplit('/', 1)[-1]
+    except:
+        pass
     return base64Img, spliturl
 
 def downloader_image(download_path, url, file_name):
-    sample = base64.b64decode(url)
-    for tf in imghdr.tests:
-        res = tf(sample, None)
-        if res:
-            break
-    if res == None:
-        fname = download_path + file_name + ".png"
-        elenemt = driver.find_element(By.CLASS_NAME, "screenshot-image")
-        elenemt.screenshot(fname)
-    else:
-        imgdata = base64.b64decode(url) 
-        path = download_path + file_name + "." + res
-        with open(path, 'wb') as f:
-            f.write(imgdata)
+    try:
+        sample = base64.b64decode(url)
+        for tf in imghdr.tests:
+            res = tf(sample, None)
+            if res:
+                break
+        if res == None:
+            fname = download_path + file_name + ".png"
+            elenemt = driver.find_element(By.CLASS_NAME, "screenshot-image")
+            elenemt.screenshot(fname)
+        else:
+            imgdata = base64.b64decode(url) 
+            path = download_path + file_name + "." + res
+            with open(path, 'wb') as f:
+                f.write(imgdata)
+    except:
+        pass
     
 def starter():
     time.sleep(5)
@@ -48,8 +54,11 @@ def starter():
     totaldownloaded = 1
     pbar = tqdm(total=amount)
     while totaldownloaded <= amount:
-        url, spliturl = loaderandgrabber()
-        downloader_image("images/", url, spliturl)
+        try:
+            url, spliturl = loaderandgrabber()
+            downloader_image("images/", url, spliturl)
+        except:
+            pass
         totaldownloaded += 1
         print("Downloading Images")
         print()
