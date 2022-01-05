@@ -13,8 +13,17 @@ driver=webdriver.Chrome(chromeDriverPath)
 driver.set_window_position(-20000,0)
 
 def loaderandgrabber():
-    letters = string.ascii_lowercase + string.digits
-    result_str = ''.join(random.choice(letters) for i in range(6))
+    while True:
+        letters = string.ascii_lowercase + string.digits
+        result_str = ''.join(random.choice(letters) for i in range(6))
+        try:
+            if os.path.isfile('images/' + result_str + '.png'):
+                raise Exception("File Exist")
+        except:
+            continue
+        else:
+            break
+    print('2')
     url = "https://prnt.sc/" + result_str
     driver.get(url)
     os.system('cls')
