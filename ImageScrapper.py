@@ -11,7 +11,11 @@ from tqdm import tqdm
 chromeDriverPath='.\chromedriver.exe'
 driver=webdriver.Chrome(chromeDriverPath)
 driver.set_window_position(-20000,0)
-
+images_folder = os.path.isdir("images")
+if not images_folder:
+    os.makedirs("images")
+else:
+    pass
 def loaderandgrabber():
     while True:
         letters = string.ascii_lowercase + string.digits
